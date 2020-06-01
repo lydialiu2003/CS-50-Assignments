@@ -184,19 +184,6 @@ function love.update(dt)
             end 
         end 
 
-        if gameMode == 'cvc' then                   ---cvc rules
-            if servingPlayer == 1 then
-                ball.dx = math.random(140, 200)
-                ball.dy = math.random(-50, 50)
-                gameState = 'play'
-             elseif servingPlayer == 2 then  --changes
-                ball.dx = -math.random(140, 200)
-                ball.dy = math.random(-50, 50)
-                gameState = 'play'
-            end 
-        end 
-
-
         if servingPlayer == 1 and side == 'left' and gameMode == 'pvc' then
             ball.dx = math.random(140, 200)
             ball.dy = math.random(-50, 50)
@@ -370,18 +357,6 @@ function love.update(dt)
       end
    
     end
-
-    if gameMode == 'cvc' then
-        -- player 1                        -- we will make this AI - controlled --boing
-     if ball.x < VIRTUAL_WIDTH/3 then 
-       if (player1.y > (ball.y + ball.height/2))  then
-          player1.dy = -PADDLE_SPEED
-       elseif (player1.y + player1.height < (ball.y + ball.height/2))  then
-          player1.dy = PADDLE_SPEED
-       else
-          player1.dy = 0
-       end
-     end
   
        -- player 2
      if ball.x > 2 * VIRTUAL_WIDTH/3 then
@@ -430,7 +405,7 @@ function love.keypressed(key)
     elseif key == 'enter' or key == 'return' then
        
         
-        if  (gameMode == 'cvc') or (gameMode == 'pvp') or (gameMode == 'pvc' and ((side == 'left' and servingPlayer == 1) or (side == 'right' and servingPlayer == 2))) then
+        if  (gameMode == 'pvp') or (gameMode == 'pvc' and ((side == 'left' and servingPlayer == 1) or (side == 'right' and servingPlayer == 2))) then
             if gameState == 'start' then
               gameState = 'serve'
           elseif gameState == 'serve' then
@@ -474,10 +449,6 @@ function love.keypressed(key)
         elseif key == '2' then
             gameMode = 'pvc'
             gameState = 'menu_diff'
-            sounds['menu_select']:play()
-        elseif key == '3' then
-            gameMode = 'cvc'
-            gameState = 'start'
             sounds['menu_select']:play()
         else 
             sounds['menu_error']:play()
@@ -585,13 +556,6 @@ function love.draw()
        if gameMode == 'pvp' then
     love.graphics.setFont(largeFont)
         love.graphics.printf('Player ' .. tostring(winningPlayer) .. ' wins!',
-            0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('Press Enter to restart!', 0, 50, VIRTUAL_WIDTH, 'center')
-
-       elseif gameMode == 'cvc' then
-        love.graphics.setFont(largeFont)
-        love.graphics.printf('Computer wins!',
             0, 10, VIRTUAL_WIDTH, 'center')
         love.graphics.setFont(smallFont)
         love.graphics.printf('Press Enter to restart!', 0, 50, VIRTUAL_WIDTH, 'center')
